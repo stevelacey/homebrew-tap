@@ -3,8 +3,8 @@ require "language/node"
 class WifiCli < Formula
   desc "Command line utility for managing Wi-Fi connections on macOS"
   homepage "https://github.com/stevelacey/wifi-cli-macos"
-  url "https://registry.npmjs.org/wifi-cli-macos/-/wifi-cli-macos-2.1.0.tgz"
-  sha256 "c4c983aa42c47f6ec80f078a52104658d11853456eef11309ce3c9e00756e0b9"
+  url "https://registry.npmjs.org/wifi-cli-macos/-/wifi-cli-macos-2.2.0.tgz"
+  sha256 "cfa3c5a6f0349697686d3fc2c9ed751e7a7f5d7a49cf6128d61b73185561b13b"
   license "MIT"
 
   depends_on "node"
