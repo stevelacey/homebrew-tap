@@ -1,0 +1,54 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [update-formula]
+
+  workflow_dispatch:
+    inputs:
+      formula:
+        description: Formula name without .rb extension (e.g. "wifi-cli")
+        required: true
+      url:
+        description: Source tarball URL
+        required: true
+      version:
+        description: Release version string (e.g. "2.3.0")
+        required: true
+
+jobs:
+  update:
+    name: Update ${{ github.event.inputs.formula || github.event.client_payload.formula }} formula
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute sha256
+        id: sha
+        env:
+          URL: ${{ github.event.inputs.url || github.event.client_payload.url }}
+        run: echo "sha256=$(curl -fsSL "$URL" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
+
+      - name: Update formula
+        env:
+          FORMULA: ${{ github.event.inputs.formula || github.event.client_payload.formula }}
+          SHA256: ${{ steps.sha.outputs.sha256 }}
+          URL: ${{ github.event.inputs.url || github.event.client_payload.url }}
+          VERSION: ${{ github.event.inputs.version || github.event.client_payload.version }}
+        run: |
+          file="Formula/${FORMULA}.rb"
+          sed -i "s|url \".*\"|url \"${URL}\"|" "$file"
+          sed -i "s|sha256 \".*\"|sha256 \"${SHA256}\"|" "$file"
+
+      - name: Commit and push
+        env:
+          FORMULA: ${{ github.event.inputs.formula || github.event.client_payload.formula }}
+          VERSION: ${{ github.event.inputs.version || github.event.client_payload.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "Formula/${FORMULA}.rb"
+          git commit -m "Update ${FORMULA} to ${VERSION}"
+          git push
