@@ -1,8 +1,8 @@
 class ProtonVpnCli < Formula
   desc "Command-line client for Proton VPN on macOS"
   homepage "https://github.com/stevelacey/proton-vpn-cli-macos"
-  url "https://github.com/stevelacey/proton-vpn-cli-macos/releases/download/0.1.0/proton_vpn_cli_macos-0.1.0-cp312-abi3-macosx_11_0_universal2.whl", using: :nounzip
-  sha256 "0000000000000000000000000000000000000000000000000000000000000000"
+  url "https://github.com/stevelacey/proton-vpn-cli-macos/releases/download/1.0.0/proton_vpn_cli_macos-1.0.0-cp312-abi3-macosx_11_0_universal2.whl", using: :nounzip
+  sha256 "c433b5e70db58bb10a8f9819bcd6d1b3a521436a6a0430ee7ebd8b0d47f3aa58"
   license "GPL-3.0-or-later"
 
   depends_on "bash"
