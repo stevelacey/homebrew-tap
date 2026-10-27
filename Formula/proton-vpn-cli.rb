@@ -13,21 +13,18 @@ class ProtonVpnCli < Formula
   def install
     system Formula["python@3.13"].opt_bin/"python3.13", "-m", "venv", libexec
     system libexec/"bin/pip", "install", "--no-cache-dir", Dir["*.whl"].first
-    bin.install_symlink libexec/"bin/vpn", libexec/"bin/protonvpn"
+    bin.install_symlink libexec/"bin/protonvpn"
   end
 
   def caveats
     <<~EOS
-      Connecting needs root for WireGuard and the kill switch. Run this once,
-      which asks for your password, so connecting doesn't again:
-        vpn setup
-
-      Then sign in:
-        protonvpn signin <username>
+      Set it up, which asks for your Mac password once so connecting doesn't need it,
+      and signs you in to your Proton account:
+        protonvpn setup
     EOS
   end
 
   test do
-    assert_match "Proton VPN", shell_output("#{bin}/vpn help")
+    assert_match "Proton VPN", shell_output("#{bin}/protonvpn help")
   end
 end
