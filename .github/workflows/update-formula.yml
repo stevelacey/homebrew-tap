@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       formula:
-        description: Formula name without .rb extension (e.g. "wifi-cli")
+        description: Formula or cask name without .rb extension (e.g. "wifi-cli")
         required: true
       url:
         description: Source tarball URL
@@ -32,15 +32,23 @@ jobs:
         run: echo "sha256=$(curl -fsSL "$URL" | sha256sum | awk '{print $1}')" >> "$GITHUB_OUTPUT"
 
       - name: Update formula
+        id: update
         env:
           FORMULA: ${{ github.event.inputs.formula || github.event.client_payload.formula }}
           SHA256: ${{ steps.sha.outputs.sha256 }}
           URL: ${{ github.event.inputs.url || github.event.client_payload.url }}
           VERSION: ${{ github.event.inputs.version || github.event.client_payload.version }}
         run: |
-          file="Formula/${FORMULA}.rb"
-          sed -i "s|url \".*\"|url \"${URL}\"|" "$file"
+          if [ -f "Casks/${FORMULA}.rb" ]; then
+            # Casks build their url from the version.
+            file="Casks/${FORMULA}.rb"
+            sed -i "s|version \".*\"|version \"${VERSION}\"|" "$file"
+          else
+            file="Formula/${FORMULA}.rb"
+            sed -i "s|url \".*\"|url \"${URL}\"|" "$file"
+          fi
           sed -i "s|sha256 \".*\"|sha256 \"${SHA256}\"|" "$file"
+          echo "file=$file" >> "$GITHUB_OUTPUT"
 
       - name: Commit and push
         env:
@@ -49,6 +57,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "Formula/${FORMULA}.rb"
+          git add "${{ steps.update.outputs.file }}"
           git commit -m "Update ${FORMULA} to ${VERSION}"
           git push
