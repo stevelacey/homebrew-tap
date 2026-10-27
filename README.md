@@ -6,7 +6,7 @@ brew tap stevelacey/tap
 
 ## Formulae
 
-- [proton-vpn-cli](https://github.com/stevelacey/proton-vpn-cli-macos): the Proton VPN CLI, forked for macOS
+- [proton-vpn-cli](https://github.com/stevelacey/proton-vpn-cli-macos): the Proton VPN CLI for macOS
 - [wifi-cli](https://github.com/stevelacey/wifi-cli-macos): manage Wi-Fi connections on macOS
 
 ## Casks
