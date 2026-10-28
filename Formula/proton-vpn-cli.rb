@@ -6,6 +6,7 @@ class ProtonVpnCli < Formula
   license "GPL-3.0-or-later"
 
   depends_on "bash"
+  depends_on "gnupg"
   depends_on :macos
   depends_on "python@3.13"
   depends_on "wireguard-tools"
