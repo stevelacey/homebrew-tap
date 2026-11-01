@@ -1,6 +1,6 @@
 cask "proton-vpn-menubar" do
-  version "1.2.2"
-  sha256 "6770a7e27bc183f5a7e17f46c188f6da2ab3bd49ab06ab26773643c40a28eafc"
+  version "1.2.3"
+  sha256 "b41c27d0411893ff700497f00a8142c2ead0ff74158a3310385c2eaaf268f1a9"
 
   url "https://github.com/stevelacey/proton-vpn-menubar/releases/download/#{version}/ProtonVPNMenuBar-#{version}.zip"
   name "Proton VPN Menu Bar"
